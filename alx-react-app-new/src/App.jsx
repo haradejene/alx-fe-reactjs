@@ -7,6 +7,7 @@ import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
 import UserProfile from "./components/UserProfile";
+import Counter from "./components/Counter"
 
 function App() {
   
@@ -21,6 +22,7 @@ function App() {
       <UserProfile name="Bob" age="30" bio="Software engineer who enjoys gaming" />
     </div>
       <WelcomeMessage />
+      <Counter />
        <Footer />
     </>
   )
