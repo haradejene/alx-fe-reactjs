@@ -1,7 +1,9 @@
-import useRecipeStore from '../recipeStore'
+import { Link } from 'react-router-dom'
+import useRecipeStore from './recipeStore'
+import DeleteRecipeButton from './DeleteRecipeButton'
 
-const RecipeList = () => {
-  const recipes = useRecipeStore((state) => state.recipes)
+export default function RecipeList() {
+  const recipes = useRecipeStore((s) => s.recipes)
 
   return (
     <div>
@@ -10,9 +12,13 @@ const RecipeList = () => {
         <p>No recipes yet. Add one!</p>
       ) : (
         recipes.map((recipe) => (
-          <div key={recipe.id} style={{ borderBottom: '1px solid #ddd', margin: '10px 0' }}>
-            <h3>{recipe.title}</h3>
+          <div key={recipe.id} style={{ borderBottom: '1px solid #ddd', padding: '8px 0' }}>
+            <h3>
+              <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+            </h3>
             <p>{recipe.description}</p>
+            <Link to={`/recipes/${recipe.id}/edit`} style={{ marginRight: 8 }}>Edit</Link>
+            <DeleteRecipeButton id={recipe.id} />
           </div>
         ))
       )}
@@ -20,4 +26,5 @@ const RecipeList = () => {
   )
 }
 
-export default RecipeList
+
+
