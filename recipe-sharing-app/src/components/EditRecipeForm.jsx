@@ -20,11 +20,12 @@ export default function EditRecipeForm() {
 
   if (!recipe) return <div>Recipe not found.</div>
 
-  const handleSubmit = (event) => {
-    event.preventDefault() // ✅ this is required
-    updateRecipe({ id: recipe.id, title: title.trim(), description: description.trim() })
-    navigate(`/recipes/${recipe.id}`)
-  }
+ const handleSubmit = (event) => {
+  event.preventDefault(); 
+  updateRecipe({ id: recipe.id, title: title.trim(), description: description.trim() })
+  navigate(`/recipes/${recipe.id}`)
+}
+
 
   return (
     <form onSubmit={handleSubmit}>
