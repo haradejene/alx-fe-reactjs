@@ -1,65 +1,58 @@
 import { create } from 'zustand'
 
-// helper to check if a recipe matches the search term
-const matchesSearch = (recipe, term) => {
-  const t = String(term || '').trim().toLowerCase()
-  if (!t) return true // empty search => match everything
-
-  if ((recipe.title || '').toLowerCase().includes(t)) return true
-  if ((recipe.description || '').toLowerCase().includes(t)) return true
-
-  if (Array.isArray(recipe.ingredients) && recipe.ingredients.join(' ').toLowerCase().includes(t))
-    return true
-
-  // allow numeric match for prepTime (e.g. "30")
-  if (recipe.prepTime != null && String(recipe.prepTime).toLowerCase().includes(t)) return true
-
-  return false
+// utility for checking if a recipe matches favorites for mock recommendations
+const recommendFromFavorites = (recipes, favorites) => {
+  if (favorites.length === 0) return []
+  // crude demo logic: recommend recipes with similar titles or random pick
+  const favTitles = favorites.map((id) => recipes.find((r) => r.id === id)?.title || '')
+  const recommended = recipes.filter((r) => {
+    const inFavs = favorites.includes(r.id)
+    const similar = favTitles.some((t) => t && r.title.toLowerCase().includes(t.split(' ')[0].toLowerCase()))
+    return !inFavs && similar
+  })
+  return recommended.slice(0, 5) // cap at 5
 }
 
-const initialRecipes = [
-  { id: 1, title: 'Spaghetti Aglio e Olio', description: 'Garlic, olive oil, chili flakes, parsley.', ingredients: ['spaghetti','garlic','olive oil'], prepTime: 20 },
-  { id: 2, title: 'Simple Pancakes', description: 'Flour, milk, egg — fluffy and quick.', ingredients: ['flour','milk','egg'], prepTime: 15 },
-]
-
 const useRecipeStore = create((set) => ({
-  recipes: initialRecipes,
-  searchTerm: '',
-  filteredRecipes: initialRecipes,
+  recipes: [],
+  favorites: [],
+  recommendations: [],
 
-  // set searchTerm and recompute filteredRecipes immediately
-  setSearchTerm: (term) =>
+  addRecipe: (recipe) =>
     set((state) => {
-      const search = term || ''
-      const filtered = state.recipes.filter((r) => matchesSearch(r, search))
-      return { searchTerm: search, filteredRecipes: filtered }
+      const recipes = [...state.recipes, recipe]
+      return { recipes }
     }),
 
-  // replace all recipes (keeps search applied)
-  setRecipes: (recipes) =>
-    set((state) => ({
-      recipes,
-      filteredRecipes: recipes.filter((r) => matchesSearch(r, state.searchTerm)),
-    })),
-
-  addRecipe: (newRecipe) =>
-    set((state) => {
-      const recipes = [...state.recipes, newRecipe]
-      return { recipes, filteredRecipes: recipes.filter((r) => matchesSearch(r, state.searchTerm)) }
-    }),
-
-  updateRecipe: (updatedRecipe) =>
+  updateRecipe: (updated) =>
     set((state) => {
       const recipes = state.recipes.map((r) =>
-        String(r.id) === String(updatedRecipe.id) ? { ...r, ...updatedRecipe } : r
+        String(r.id) === String(updated.id) ? { ...r, ...updated } : r
       )
-      return { recipes, filteredRecipes: recipes.filter((r) => matchesSearch(r, state.searchTerm)) }
+      return { recipes }
     }),
 
   deleteRecipe: (id) =>
+    set((state) => ({
+      recipes: state.recipes.filter((r) => String(r.id) !== String(id)),
+    })),
+
+  // === FAVORITES ===
+  addFavorite: (id) =>
+    set((state) => ({
+      favorites: [...new Set([...state.favorites, id])], // prevent duplicates
+    })),
+
+  removeFavorite: (id) =>
+    set((state) => ({
+      favorites: state.favorites.filter((fav) => fav !== id),
+    })),
+
+  // === RECOMMENDATIONS ===
+  generateRecommendations: () =>
     set((state) => {
-      const recipes = state.recipes.filter((r) => String(r.id) !== String(id))
-      return { recipes, filteredRecipes: recipes.filter((r) => matchesSearch(r, state.searchTerm)) }
+      const recs = recommendFromFavorites(state.recipes, state.favorites)
+      return { recommendations: recs }
     }),
 }))
 
