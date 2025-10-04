@@ -47,7 +47,7 @@ export default function Search() {
 
       {/* Conditional Rendering */}
       {loading && <p className="text-center text-gray-500">Loading...</p>}
-      {error && <p className="text-center text-red-500 font-semibold">Looks like we can't find the user.</p>}
+      {error && <p className="text-center text-red-500 font-semibold">Looks like we cant find the user</p>}
       {user && (
         <div className="mt-4 p-4 border border-gray-200 rounded-xl flex items-center gap-4 bg-white shadow-sm">
           <img
