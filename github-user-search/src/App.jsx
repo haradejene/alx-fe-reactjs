@@ -5,7 +5,7 @@ import UserProfile from "./components/UserProfile";
 function App() {
   return (
     <Router>
-      <div className="app">
+      <div className="h-screen w-screen bg-gradient-to-r from-blue-50 via-white to-blue-50">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user/:username" element={<UserProfile />} />
