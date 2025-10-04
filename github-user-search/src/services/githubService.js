@@ -1,5 +1,8 @@
 import axios from "axios";
 
+
+export const minRepos = 5;
+
 // Fetch a single GitHub user by username
 export const fetchUserData = async (username) => {
   try {
@@ -20,6 +23,7 @@ export const searchUsers = async (query, options = {}) => {
     // Build query string properly
     if (options.location) searchQuery += `+location:${options.location}`;
     if (options.repos) searchQuery += `+repos:>=${options.repos}`;
+    else searchQuery += `+repos:>=${minRepos}`; 
     if (options.followers) searchQuery += `+followers:>=${options.followers}`;
     if (options.language) searchQuery += `+language:${options.language}`;
 
