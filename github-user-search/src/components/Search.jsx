@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubAPI";
+import { fetchUserData } from "../services/githubService";
+
 
 export default function Search() {
   const [username, setUsername] = useState("");      // Input field value
