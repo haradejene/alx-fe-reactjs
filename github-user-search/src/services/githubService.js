@@ -18,25 +18,29 @@ export const fetchUserData = async (username) => {
 // options is an object: { location, repos, followers, language, etc. }
 export const searchUsers = async (query, options = {}) => {
   try {
-    let searchQuery = query.trim();
+    let searchQuery = `${query.trim()} in:login`; // 👈 key change
 
-    // Build query string properly
-    if (options.location) searchQuery += `+location:${options.location}`;
-    if (options.repos) searchQuery += `+repos:>=${options.repos}`;
-    else searchQuery += `+repos:>=${minRepos}`; 
-    if (options.followers) searchQuery += `+followers:>=${options.followers}`;
-    if (options.language) searchQuery += `+language:${options.language}`;
+    if (options.location) searchQuery += ` location:${options.location}`;
+    if (options.repos) searchQuery += ` repos:>=${options.repos}`;
+    else searchQuery += ` repos:>=5`;
+    if (options.followers) searchQuery += ` followers:>=${options.followers}`;
+    if (options.language) searchQuery += ` language:${options.language}`;
 
     const page = options.page || 1;
 
-    // Encode the full query string
-    const response = await axios.get(
-      `https://api.github.com/search/users?q=${encodeURIComponent(searchQuery)}&page=${page}&per_page=30`
-    );
+    const url = `https://api.github.com/search/users?q=${encodeURIComponent(
+      searchQuery
+    )}&page=${page}&per_page=30`;
+
+    console.log("🔍 Requesting:", url);
+
+    const response = await axios.get(url);
+
+    console.log("✅ GitHub API response:", response.data);
 
     return response.data.items;
   } catch (error) {
-    console.error("Error searching GitHub users:", error);
+    console.error("❌ Error searching GitHub users:", error.response?.data || error.message);
     throw error;
   }
 };
