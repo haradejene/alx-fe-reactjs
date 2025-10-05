@@ -32,15 +32,11 @@ export const searchUsers = async (query, options = {}) => {
       searchQuery
     )}&page=${page}&per_page=30`;
 
-    console.log("🔍 Requesting:", url);
-
     const response = await axios.get(url);
-
-    console.log("✅ GitHub API response:", response.data);
 
     return response.data.items;
   } catch (error) {
-    console.error("❌ Error searching GitHub users:", error.response?.data || error.message);
+
     throw error;
   }
 };
