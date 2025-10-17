@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function HomePage() {
+const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -13,15 +13,14 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-        🍽️ Delicious Recipes
+        🍳 Recipe Sharing Platform
       </h1>
 
-      {/* Grid layout */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
           <div
             key={recipe.id}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow transform hover:scale-105 duration-300 overflow-hidden"
+            className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl hover:scale-105 transform transition duration-300"
           >
             <img
               src={recipe.image}
@@ -29,14 +28,22 @@ export default function HomePage() {
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-xl font-semibold text-gray-800">
                 {recipe.title}
               </h2>
-              <p className="text-gray-600 text-sm">{recipe.summary}</p>
+              <p className="text-gray-600 text-sm mt-2">{recipe.summary}</p>
+              <a
+                href={`/recipe/${recipe.id}`}
+                className="inline-block mt-4 text-indigo-600 font-medium hover:underline"
+              >
+                View Details →
+              </a>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;
