@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import RecipeDetail from "./components/RecipeDetail";
 import ErrorBoundary from "./ErrorBoundary";
+import AddRecipeForm from "./components/AddRecipeForm";
 
 function App() {
   return (
@@ -11,10 +12,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/recipe/:id" element={<RecipeDetail />} />
+          <Route path="/add-recipe" element={<AddRecipeForm />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>
   );
 }
+
 
 export default App;
