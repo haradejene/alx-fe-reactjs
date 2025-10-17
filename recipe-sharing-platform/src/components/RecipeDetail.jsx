@@ -51,16 +51,14 @@ const RecipeDetail = () => {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-indigo-700 mb-2">
-                👩‍🍳 Instructions
-              </h2>
-              <ol className="list-decimal list-inside text-gray-700 space-y-1">
-                <li>Prepare all the ingredients.</li>
-                <li>Cook on medium heat until done.</li>
-                <li>Serve hot and enjoy!</li>
-              </ol>
-            </div>
-          </div>
+  <h2 className="text-xl font-semibold text-indigo-700 mb-2">👩‍🍳 Instructions</h2>
+  <ol className="list-decimal list-inside text-gray-700 space-y-1">
+    {recipe.instructions.map((step, index) => (
+      <li key={index}>{step}</li>
+    ))}
+  </ol>
+</div>
+            </div>  
 
           <div className="mt-6">
             <Link
