@@ -41,7 +41,7 @@ const RecipeDetail = () => {
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
               <h2 className="text-xl font-semibold text-indigo-700 mb-2">
-                🧂 Ingredients
+                🧂 ingredients
               </h2>
               <ul className="list-disc list-inside text-gray-700 space-y-1">
                 <li>1 cup ingredient A</li>
