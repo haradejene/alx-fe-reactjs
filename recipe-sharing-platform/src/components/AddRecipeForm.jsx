@@ -3,35 +3,37 @@ import React, { useState } from "react";
 const AddRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Validation function
   const validate = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
     else if (ingredients.split(",").length < 2)
       newErrors.ingredients = "Please enter at least two ingredients separated by commas";
-    if (!instructions.trim()) newErrors.instructions = "Instructions are required";
+    if (!steps.trim()) newErrors.steps = "Preparation steps are required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Here you could send the data to your backend or state
+    // Example: log the recipe data
     console.log({
       title,
       ingredients: ingredients.split(",").map((i) => i.trim()),
-      instructions,
+      steps: steps.split("\n").map((s) => s.trim()), // split steps by newline
     });
 
-    // Clear the form after submission
+    // Reset form
     setTitle("");
     setIngredients("");
-    setInstructions("");
+    setSteps("");
     setErrors({});
   };
 
@@ -67,18 +69,18 @@ const AddRecipeForm = () => {
           {errors.ingredients && <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>}
         </div>
 
-        {/* Instructions */}
+        {/* Steps */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Preparation Steps</label>
+          <label className="block text-gray-700 font-medium mb-1">Preparation Steps (one per line)</label>
           <textarea
             className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 ${
-              errors.instructions ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-300"
+              errors.steps ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-300"
             }`}
             rows="5"
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
+            value={steps}
+            onChange={(e) => setSteps(e.target.value)}
           />
-          {errors.instructions && <p className="text-red-500 text-sm mt-1">{errors.instructions}</p>}
+          {errors.steps && <p className="text-red-500 text-sm mt-1">{errors.steps}</p>}
         </div>
 
         {/* Submit Button */}
