@@ -1,7 +1,8 @@
+// src/components/PostsComponent.jsx
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
-// Function to fetch posts from the API
+// Fetch function
 const fetchPosts = async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
   if (!response.ok) {
@@ -21,7 +22,12 @@ const PostsComponent = () => {
   } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    staleTime: 1000 * 60, // 1 minute caching
+
+    // 🕒 Advanced configuration:
+    cacheTime: 1000 * 60 * 5, // Keep data in cache for 5 minutes even if component unmounts
+    staleTime: 1000 * 60, // Data considered fresh for 1 minute
+    refetchOnWindowFocus: false, // Prevent automatic refetch when window regains focus
+    keepPreviousData: true, // Retain previous data while fetching new data
   });
 
   if (isLoading) return <p>Loading posts...</p>;
