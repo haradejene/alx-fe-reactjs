@@ -4,6 +4,8 @@ import About from './pages/About'
 import Profile from './components/Profile'
 import Blog from './components/Blog'
 import BlogPost from './components/BlogPost'
+import ProtectedRoute from './components/ProtectedRoute'
+
 
 function App() {
   return (
@@ -16,14 +18,23 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/profile/*" element={<Profile />} />
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
 
-        {/* Blog Routes */}
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
-      </Routes>
+  {/* Protected Profile Route */}
+  <Route 
+    path="/profile/*" 
+    element={
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    } 
+  />
+
+  <Route path="/blog" element={<Blog />} />
+  <Route path="/blog/:id" element={<BlogPost />} />
+</Routes>
+
     </BrowserRouter>
   )
 }
