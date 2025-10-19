@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
 import Profile from './components/Profile'
-import ProfileDetails from './components/ProfileDetails'
-import ProfileSettings from './components/ProfileSettings'
+import Blog from './components/Blog'
+import BlogPost from './components/BlogPost'
 
 function App() {
   return (
@@ -11,17 +11,18 @@ function App() {
       <nav>
         <Link to="/">Home</Link> | 
         <Link to="/about">About</Link> | 
-        <Link to="/profile">Profile</Link>
+        <Link to="/profile">Profile</Link> | 
+        <Link to="/blog">Blog</Link>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/profile/*" element={<Profile />} />
 
-        <Route path="/profile" element={<Profile />}>
-          <Route path="details" element={<ProfileDetails />} />
-          <Route path="settings" element={<ProfileSettings />} />
-        </Route>
+        {/* Blog Routes */}
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
       </Routes>
     </BrowserRouter>
   )
